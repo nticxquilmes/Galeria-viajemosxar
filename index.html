@@ -153,19 +153,16 @@ function showSlide() {
 
 function next() {
 
-    current++;
-    if (current >= 9 ) {
-        current = 0;
+    if (current < 8 ) {
+        current++;
         showSlide();
     }
 }
 
 function previous() {
 
-    current--;
-
-    if (current < 0) {
-        current = 8;
+    if (current > 0) {
+        current--;
         showSlide();
     }
 }
