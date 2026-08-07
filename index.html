@@ -126,8 +126,8 @@ button {
         
     </div>
 
-    <button class="prev" onclick="previous()">‹</button>
-    <button class="next" onclick="next()">›</button>
+    <button class="prev">‹</button>
+    <button class="next">›</button>
 
     <div class="counter" id="counter">
         1 / 9
@@ -138,9 +138,14 @@ button {
 <script>
 
 let current = 0;
+const total = 9;
 
 const slides = document.getElementById("slides");
 const counter = document.getElementById("counter");
+
+const botonAnterior = document.querySelector(".prev");
+const botonSiguiente = document.querySelector(".next");
+
 
 function showSlide() {
 
@@ -148,53 +153,88 @@ function showSlide() {
         "translateX(-" + (current * 100) + "%)";
 
     counter.textContent =
-        (current + 1) + " / 9";
+        (current + 1) + " / " + total;
 }
 
-function next() {
+
+/* BOTÓN SIGUIENTE */
+
+botonSiguiente.addEventListener("click", function() {
 
     current++;
-    if (current > 8 ) {
+
+    if (current >= total) {
         current = 0;
     }
-        showSlide();
-    }
+
+    showSlide();
+
+});
 
 
-function previous() {
+/* BOTÓN ANTERIOR */
+
+botonAnterior.addEventListener("click", function() {
 
     current--;
+
     if (current < 0) {
-        current = 8;
-    }
-        showSlide();
+        current = total - 1;
     }
 
+    showSlide();
+
+});
 
 
-/* Deslizamiento con el dedo */
+/* DESLIZAMIENTO CON EL DEDO */
 
 let startX = 0;
 
 slides.addEventListener("touchstart", function(e) {
+
     startX = e.touches[0].clientX;
+
 });
+
 
 slides.addEventListener("touchend", function(e) {
 
     let endX = e.changedTouches[0].clientX;
 
-    if (startX - endX > 50) {
-        next();
+    let diferencia = startX - endX;
+
+
+    if (diferencia > 50) {
+
+        current++;
+
+        if (current >= total) {
+            current = 0;
+        }
+
+        showSlide();
     }
 
-    if (endX - startX > 50) {
-        previous();
+
+    if (diferencia < -50) {
+
+        current--;
+
+        if (current < 0) {
+            current = total - 1;
+        }
+
+        showSlide();
     }
 
 });
 
-</script>
 
+/* POSICIÓN INICIAL */
+
+showSlide();
+
+</script>
 </body>
 </html>
